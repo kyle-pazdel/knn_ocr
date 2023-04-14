@@ -2,7 +2,7 @@ from PIL import Image
 import numpy as np
 import csv
 
-test_number = 666
+test_number = 17600
 
 # Converts data from csv to a two-dimensional array
 # MUST BE greater than 0 and less than 23270
