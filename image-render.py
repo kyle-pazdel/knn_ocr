@@ -2,7 +2,7 @@ from PIL import Image
 import numpy as np
 import csv
 
-test_number = 20000
+test_number = 40
 
 # Converts data from csv to a two-dimensional array
 # MUST BE greater than 0 and less than 23270
