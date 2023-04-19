@@ -33,6 +33,7 @@ def parse_colors(array):
 def reshape_array(array):
     formatted = np.array(array)
     reshaped = formatted.reshape(20, 20)
+    print(reshaped)
     return reshaped
 
 

@@ -12,6 +12,7 @@ font_list = ['GEORGIA', 'PALATINO', 'FRANKLIN', 'STYLUS', 'NINA', 'GOUDY', 'BRIT
 
 # DATASET IMPORT
 
+# Read dataset from csv file
 def convert_data(location):
     results = []
     with open(location) as csvfile:
@@ -25,10 +26,36 @@ iris = datasets.load_iris()
 X = iris['data']
 y = iris['target']
 
+
+# extract X from dataset and format into numpy array
+def extract_X(array):
+    res = []
+    for row in range(1, len(array)):
+        new_row = []
+        for col in array[row][12:]:
+            new_row.append(int(col))
+        res.append(new_row)
+    formatted = np.array(res)
+    return formatted
+
+# extract m_labels from dataset and format into numpy array
+
+
+def extract_y(array):
+    targets = []
+    for x in range(1, len(array)):
+        label = array[x][2]
+        targets.append(int(label))
+    formatted = np.array(targets)
+    return formatted
+
+
 dataset_array = convert_data("../ARIAL.csv")
-# print(dataset_array[0])
-print(dataset_array[1][2])
-print(dataset_array[2][2])
+X = extract_X(dataset_array)
+print(X)
+y = extract_y(dataset_array)
+print(y)
+
 
 # KNN ALGORITHM
 
