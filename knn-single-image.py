@@ -4,14 +4,34 @@ from sklearn import datasets
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
-data = pd.read_csv('./fonts/ARIAL.csv')
-print(data)
+import csv
 
 font_list = ['GEORGIA', 'PALATINO', 'FRANKLIN', 'STYLUS', 'NINA', 'GOUDY', 'BRITANNIC', 'CURLZ', 'ROMANTIC', 'CONSTANTIA', 'SIMPLEX', 'BAUHAUS', 'GUNPLAY', 'GABRIOLA', 'ERAS', 'CONSOLAS', 'RAGE', 'ENGLISH', 'NUMERICS', 'BUXTON', 'NIAGARA', 'MONOTYPE', 'YI BAITI', 'LEELAWADEE', 'JUICE', 'SITKA', 'BAITI', 'CORBEL', 'BASKERVILLE', 'MINGLIU', 'BLACKADDER', 'EDWARDIAN', 'VLADIMIR', 'FORTE', 'GOTHICE', 'MONOSPAC821', 'TREBUCHET', 'SNAP', 'SCRIPT', 'PHAGSPA', 'SKETCHFLOW', 'CALIFORNIAN', 'SYLFAEN', 'SEGOE', 'GADUGI', 'BANKGOTHIC', 'STENCIL', 'COUNTRYBLUEPRINT', 'HANDPRINT', 'COMIC', 'TIMES', 'CALISTO', 'PLAYBILL', 'BERNARD', 'JOKERMAN', 'MODERN', 'TAI', 'CAARD', 'CENTURY', 'CENTAUR', 'PANROMAN', 'RICHARD', 'HAETTENSCHWEILER', 'CASTELLAR', 'ITALIC', 'EBRIMA', 'MONEY', 'MYANMAR', 'ENGRAVERS', 'PROXY', 'PALACE', 'QUICKTYPE', 'TECHNIC', 'VINER', 'RAVIE', 'CREDITCARD',
              'SUPERFRENCH', 'PRISTINA', 'GIGI', 'CANDARA', 'IMPACT', 'CHILLER', 'VIVALDI', 'ARIAL', 'CAMBRIA', 'COMPLEX', 'MAGNETO', 'COOPER', 'KUNSTLER', 'BERLIN', 'ROCKWELL', 'SWIS721', 'FELIX TITLING', 'TXT', 'GLOUCESTER', 'NIRMALA', 'IMPRINT', 'HIGH TOWER', 'AGENCY', 'BRADLEY', 'PERPETUA', 'EUROROMAN', 'ISOC', 'SHOWCARD', 'PAPYRUS', 'REFERENCE', 'COMMERCIALSCRIPT', 'SCRIPTB', 'BELL', 'CITYBLUEPRINT', 'TAHOMA', 'PMINGLIU-EXTB', 'COURIER', 'BOOK', 'HIMALAYA', 'KRISTEN', 'GILL', 'BROADWAY', 'ONYX', 'VINETA', 'BOOKMAN', 'MISTRAL', 'TEMPUS', 'HARRINGTON', 'VIN', 'GARAMOND', 'JAVANESE', 'WIDE', 'BITSTREAMVERA', 'OCRB', 'INFORMAL', 'ROMAN', 'MATURA', 'BRUSH', 'BODONI', 'MONOTXT', 'SANSSERIF', 'ELEPHANT', 'SERIF', 'MAIANDRA', 'CALIBRI', 'OCRA', 'FREESTYLE', 'FRENCH', 'TW', 'FOOTLIGHT', 'E13B', 'LUCIDA', 'MV_BOLI', 'COPPERPLATE', 'DUTCH801', 'VERDANA', 'HARLOW']
 
-print(font_list)
+
+# DATASET IMPORT
+
+def convert_data(location):
+    results = []
+    with open(location) as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            results.append(row)
+    return results
+
+
+iris = datasets.load_iris()
+X = iris['data']
+y = iris['target']
+
+dataset_array = convert_data("../ARIAL.csv")
+# print(dataset_array[0])
+print(dataset_array[1][2])
+print(dataset_array[2][2])
+
+# KNN ALGORITHM
+
 
 # def most_common(lst):
 #     return max(set(lst), key=lst.count)

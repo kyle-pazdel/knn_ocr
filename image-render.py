@@ -2,7 +2,7 @@ from PIL import Image
 import numpy as np
 import csv
 
-test_number = 17600
+test_number = 20000
 
 # Converts data from csv to a two-dimensional array
 # MUST BE greater than 0 and less than 23270
@@ -50,7 +50,7 @@ def write_image(image_array):
     array = np.zeros([height, width, channels], dtype=np.uint8)
     for index, value in enumerate(image_array):
         for j_index, j in enumerate(image_array[index]):
-            array[index, j_index] = [0, 0, j]
+            array[index, j_index] = [j, j, j]
     img = Image.fromarray(array)
     img.save(f'rgbrender_{test_number}.png')
 
