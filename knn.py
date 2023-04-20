@@ -32,8 +32,6 @@ class KNeighborsClassifier:
 
     def evaluate(self, X_test, y_test):
         y_pred = self.predict(X_test)
-        y_pred = np.array(y_pred)
-        y_test = np.array(y_test)
         accuracy = sum(y_pred == y_test) / len(y_test)
         return accuracy
 

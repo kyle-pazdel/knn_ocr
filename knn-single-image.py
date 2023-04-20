@@ -9,10 +9,14 @@ import csv
 font_list = ['GEORGIA', 'PALATINO', 'FRANKLIN', 'STYLUS', 'NINA', 'GOUDY', 'BRITANNIC', 'CURLZ', 'ROMANTIC', 'CONSTANTIA', 'SIMPLEX', 'BAUHAUS', 'GUNPLAY', 'GABRIOLA', 'ERAS', 'CONSOLAS', 'RAGE', 'ENGLISH', 'NUMERICS', 'BUXTON', 'NIAGARA', 'MONOTYPE', 'YI BAITI', 'LEELAWADEE', 'JUICE', 'SITKA', 'BAITI', 'CORBEL', 'BASKERVILLE', 'MINGLIU', 'BLACKADDER', 'EDWARDIAN', 'VLADIMIR', 'FORTE', 'GOTHICE', 'MONOSPAC821', 'TREBUCHET', 'SNAP', 'SCRIPT', 'PHAGSPA', 'SKETCHFLOW', 'CALIFORNIAN', 'SYLFAEN', 'SEGOE', 'GADUGI', 'BANKGOTHIC', 'STENCIL', 'COUNTRYBLUEPRINT', 'HANDPRINT', 'COMIC', 'TIMES', 'CALISTO', 'PLAYBILL', 'BERNARD', 'JOKERMAN', 'MODERN', 'TAI', 'CAARD', 'CENTURY', 'CENTAUR', 'PANROMAN', 'RICHARD', 'HAETTENSCHWEILER', 'CASTELLAR', 'ITALIC', 'EBRIMA', 'MONEY', 'MYANMAR', 'ENGRAVERS', 'PROXY', 'PALACE', 'QUICKTYPE', 'TECHNIC', 'VINER', 'RAVIE', 'CREDITCARD',
              'SUPERFRENCH', 'PRISTINA', 'GIGI', 'CANDARA', 'IMPACT', 'CHILLER', 'VIVALDI', 'ARIAL', 'CAMBRIA', 'COMPLEX', 'MAGNETO', 'COOPER', 'KUNSTLER', 'BERLIN', 'ROCKWELL', 'SWIS721', 'FELIX TITLING', 'TXT', 'GLOUCESTER', 'NIRMALA', 'IMPRINT', 'HIGH TOWER', 'AGENCY', 'BRADLEY', 'PERPETUA', 'EUROROMAN', 'ISOC', 'SHOWCARD', 'PAPYRUS', 'REFERENCE', 'COMMERCIALSCRIPT', 'SCRIPTB', 'BELL', 'CITYBLUEPRINT', 'TAHOMA', 'PMINGLIU-EXTB', 'COURIER', 'BOOK', 'HIMALAYA', 'KRISTEN', 'GILL', 'BROADWAY', 'ONYX', 'VINETA', 'BOOKMAN', 'MISTRAL', 'TEMPUS', 'HARRINGTON', 'VIN', 'GARAMOND', 'JAVANESE', 'WIDE', 'BITSTREAMVERA', 'OCRB', 'INFORMAL', 'ROMAN', 'MATURA', 'BRUSH', 'BODONI', 'MONOTXT', 'SANSSERIF', 'ELEPHANT', 'SERIF', 'MAIANDRA', 'CALIBRI', 'OCRA', 'FREESTYLE', 'FRENCH', 'TW', 'FOOTLIGHT', 'E13B', 'LUCIDA', 'MV_BOLI', 'COPPERPLATE', 'DUTCH801', 'VERDANA', 'HARLOW']
 
+most_popular_fonts = ['HELVETICA', 'GARAMOND',
+                      'BODONI', 'TIMES', 'VERDANA', 'ROCKWELL', 'FRANKLIN']
 
 # DATASET IMPORT AND TRANSFORMATION
 
 # Read dataset from csv file
+
+
 def convert_data(location):
     results = []
     with open(location) as csvfile:
@@ -41,8 +45,8 @@ def extract_X(array):
     print("...")
     for row in range(1, len(array)):
         new_row = []
-        for col in array[row][12:]:
-            new_row.append(int(col))
+        for col in array[row][3:]:
+            new_row.append(float(col))
         res.append(new_row)
     formatted = np.array(res)
     print("X extracted.")
@@ -60,7 +64,7 @@ def extract_y(array):
     print("...")
     for x in range(1, len(array)):
         label = array[x][2]
-        targets.append(int(label))
+        targets.append(float(label))
     formatted = np.array(targets)
     formatted = targets
     print("Y extracted.")
@@ -78,7 +82,7 @@ def euclidean(point, data):
 
 
 class KNeighborsClassifier:
-    def __init__(self, k=67, dist_metric=euclidean):
+    def __init__(self, k=207, dist_metric=euclidean):
         self.k = k
         self.dist_metric = dist_metric
 
@@ -105,6 +109,7 @@ class KNeighborsClassifier:
 
 # Get dataset
 dataset_array = convert_data("../ARIAL.csv")
+# dataset_array = convert_data("../fonts.csv")
 
 # iris = datasets.load_iris()
 # X = iris['data']
@@ -112,14 +117,18 @@ dataset_array = convert_data("../ARIAL.csv")
 
 
 # Extract X and y arrays
-# print(X)
-X = extract_X(dataset_array)
-# print(X)
-# print(len(X))
-# print(y)
-y = extract_y(dataset_array)
-# print(y)
-# print(len(y))
+
+iris = datasets.load_iris()
+digits = datasets.load_digits()
+print(digits.data.shape)
+# X = iris['data']
+# y = iris['target']
+X = digits['data']
+y = digits['target']
+
+
+# X = extract_X(dataset_array)
+# y = extract_y(dataset_array)
 
 # Split into train and test data
 print("Splitting train and test data...")
@@ -138,13 +147,17 @@ X_train, X_test = ss.transform(X_train), ss.transform(X_test)
 # RUN KNN ALOGRITHM WITH DATASET AND PLOT RESULTS
 
 accuracies = []
-ks = range(1, 30)
+ks = range(1, 11)
 for k in ks:
     knn = KNeighborsClassifier(k=k)
     knn.fit(X_train, y_train)
     accuracy = knn.evaluate(X_test, y_test)
     accuracies.append(accuracy)
-print("Accuracies: ", accuracies)
+
+
+print("Accuracies")
+for ind, a in enumerate(accuracies):
+    print(f"Case {ind + 1}: ", f"{round(a * 100, 2)}%")
 
 fig, ax = plt.subplots()
 ax.plot(ks, accuracies)
