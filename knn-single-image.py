@@ -69,7 +69,6 @@ def extract_y(array):
 
 
 # KNN ALGORITHM AND METHODS
-
 def most_common(lst):
     return max(set(lst), key=lst.count)
 
@@ -79,7 +78,7 @@ def euclidean(point, data):
 
 
 class KNeighborsClassifier:
-    def __init__(self, k=5, dist_metric=euclidean):
+    def __init__(self, k=67, dist_metric=euclidean):
         self.k = k
         self.dist_metric = dist_metric
 
@@ -97,6 +96,9 @@ class KNeighborsClassifier:
 
     def evaluate(self, X_test, y_test):
         y_pred = self.predict(X_test)
+        # Both y_pred and y_test must be numpy arrays to make use of the boolean array to test equality between them
+        y_pred = np.array(y_pred)
+        y_test = np.array(y_test)
         accuracy = sum(y_pred == y_test) / len(y_test)
         return accuracy
 
@@ -104,9 +106,9 @@ class KNeighborsClassifier:
 # Get dataset
 dataset_array = convert_data("../ARIAL.csv")
 
-iris = datasets.load_iris()
-X = iris['data']
-y = iris['target']
+# iris = datasets.load_iris()
+# X = iris['data']
+# y = iris['target']
 
 
 # Extract X and y arrays
@@ -142,7 +144,7 @@ for k in ks:
     knn.fit(X_train, y_train)
     accuracy = knn.evaluate(X_test, y_test)
     accuracies.append(accuracy)
-
+print("Accuracies: ", accuracies)
 
 fig, ax = plt.subplots()
 ax.plot(ks, accuracies)
