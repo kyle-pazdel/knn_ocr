@@ -15,6 +15,7 @@ img_bool = img > thresh
 inverted = np.invert(img_bool)
 maxval = 255
 img_bin = (inverted) * maxval
+print(type(img_bin))
 
 # # For Greyscale Image
 # img_bin_keep = (inverted) * img
