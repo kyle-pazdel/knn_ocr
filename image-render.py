@@ -41,19 +41,19 @@ data_array = convert_data()
 parsed_data = parse_colors(data_array)
 image_array = reshape_array(parsed_data[test_number])
 
-
 # Writes image to a png file
-def write_image(image_array):
-    width = 20
-    height = 20
-    channels = 3
+Image.fromarray(np.uint8(image_array)).save(f'./rgbrender_{test_number}.png')
+# def write_image(image_array):
+#     width = 20
+#     height = 20
+#     channels = 3
 
-    array = np.zeros([height, width, channels], dtype=np.uint8)
-    for index, value in enumerate(image_array):
-        for j_index, j in enumerate(image_array[index]):
-            array[index, j_index] = [j, j, j]
-    img = Image.fromarray(array)
-    img.save(f'rgbrender_{test_number}.png')
+#     array = np.zeros([height, width, channels], dtype=np.uint8)
+#     for index, value in enumerate(image_array):
+#         for j_index, j in enumerate(image_array[index]):
+#             array[index, j_index] = [j, j, j]
+#     img = Image.fromarray(array)
+#     img.save(f'rgbrender_{test_number}.png')
 
 
-write_image(image_array)
+# write_image(image_array)
