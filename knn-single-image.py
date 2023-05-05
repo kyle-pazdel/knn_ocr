@@ -6,6 +6,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import csv
 from PIL import Image
+import cv2
 
 most_popular_fonts = ['HELVETICA', 'GARAMOND',
                       'BODONI', 'TIMES', 'VERDANA', 'ROCKWELL', 'FRANKLIN']
@@ -16,6 +17,8 @@ most_popular_fonts = ['HELVETICA', 'GARAMOND',
 img = np.array(Image.open("./test_images/letter_C.jpg").convert('L'))
 # img = np.array(Image.open("./rgbrender_10234.png").convert('L'))
 print(img)
+img = cv2.resize(img, dsize=(20, 20), interpolation=cv2.INTER_LINEAR)
+print(img.shape)
 
 # For Binary Black-and-White image
 # The threshold value (adjust sensitivity for image binarization)

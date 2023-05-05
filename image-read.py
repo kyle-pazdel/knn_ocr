@@ -1,11 +1,15 @@
 from PIL import Image
 import numpy as np
+import cv2
 
 
 # Read and Binarize Test Image
 img = np.array(Image.open("./test_images/letter_C.jpg").convert('L'))
 # img = np.array(Image.open("./rgbrender_10234.png").convert('L'))
 print(img)
+img = cv2.resize(img, dsize=(20, 20), interpolation=cv2.INTER_LINEAR)
+print(img.shape)
+
 
 # For Binary Black-and-White image
 # The threshold value (adjust sensitivity for image binarization)
