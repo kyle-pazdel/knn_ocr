@@ -136,32 +136,29 @@ class KNeighborsClassifier:
 dataset_array = convert_data("../ARIAL.csv")
 # dataset_array = convert_data("../fonts.csv")
 
-# iris = datasets.load_iris()
-# X = iris['data']
-# y = iris['target']
+# Extract X and y arrays
+X = extract_X(dataset_array)
+y = extract_y(dataset_array)
 
 
 # TOY DATASETS for testing
 # iris = datasets.load_iris()
-digits = datasets.load_digits()
+# digits = datasets.load_digits()
 # print(digits.data.shape)
 # X = iris['data']
 # y = iris['target']
-X = digits['data']
-y = digits['target']
+# X = digits['data']
+# y = digits['target']
 
-
-# Extract X and y arrays
-# X = extract_X(dataset_array)
-# y = extract_y(dataset_array)
 
 # Split into train and test data
-print("Splitting train and test data...")
+print("Sampling training data...")
 print("...")
 print("...")
 print("...")
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.01)
-print("test and train data split.")
+X_test = img_bin
+print("train data sampled split.")
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
 # Scale the train and test data using SrandardScaler
@@ -171,18 +168,23 @@ X_train, X_test = ss.transform(X_train), ss.transform(X_test)
 
 # RUN KNN ALOGRITHM WITH DATASET AND PLOT RESULTS
 
-accuracies = []
-ks = range(1, 11)
-for k in ks:
-    knn = KNeighborsClassifier(k=k)
-    knn.fit(X_train, y_train)
-    accuracy = knn.evaluate(X_test, y_test)
-    accuracies.append(accuracy)
+knn = KNeighborsClassifier()
+knn.fit(X_train, y_train)
+y_pred = knn.predict(X_test)
+print(y_pred)
+
+# accuracies = []
+# ks = range(1, 11)
+# for k in ks:
+#     knn = KNeighborsClassifier(k=k)
+#     knn.fit(X_train, y_train)
+#     accuracy = knn.evaluate(X_test, y_test)
+#     accuracies.append(accuracy)
 
 
-print("Accuracies")
-for ind, a in enumerate(accuracies):
-    print(f"Case {ind + 1}: ", f"{round(a * 100, 2)}%")
+# print("Accuracies")
+# for ind, a in enumerate(accuracies):
+#     print(f"Case {ind + 1}: ", f"{round(a * 100, 2)}%")
 
 # fig, ax = plt.subplots()
 # ax.plot(ks, accuracies)
@@ -190,3 +192,8 @@ for ind, a in enumerate(accuracies):
 #        ylabel="Accuracy",
 #        title="Performance of knn")
 # plt.show()
+
+
+# TODO: LEFT OFF
+# Need to ensure that test data is the same shape and size as train data
+# Need to ensure that StandardScaler is working with new Test data
