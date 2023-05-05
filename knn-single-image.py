@@ -82,7 +82,7 @@ def euclidean(point, data):
 
 
 class KNeighborsClassifier:
-    def __init__(self, k=207, dist_metric=euclidean):
+    def __init__(self, k=21, dist_metric=euclidean):
         self.k = k
         self.dist_metric = dist_metric
 
@@ -98,13 +98,14 @@ class KNeighborsClassifier:
             neighbors.append(y_sorted[:self.k])
         return list(map(most_common, neighbors))
 
-    def evaluate(self, X_test, y_test):
-        y_pred = self.predict(X_test)
-        # Both y_pred and y_test must be numpy arrays to make use of the boolean array to test equality between them
-        y_pred = np.array(y_pred)
-        y_test = np.array(y_test)
-        accuracy = sum(y_pred == y_test) / len(y_test)
-        return accuracy
+
+def evaluate(self, X_test, y_test):
+    y_pred = self.predict(X_test)
+    # Both y_pred and y_test must be numpy arrays to make use of the boolean array to test equality between them
+    y_pred = np.array(y_pred)
+    y_test = np.array(y_test)
+    accuracy = sum(y_pred == y_test) / len(y_test)
+    return accuracy
 
 
 # Get dataset
@@ -116,17 +117,17 @@ dataset_array = convert_data("../ARIAL.csv")
 # y = iris['target']
 
 
-# Extract X and y arrays
-
-iris = datasets.load_iris()
+# TOY DATASETS for testing
+# iris = datasets.load_iris()
 digits = datasets.load_digits()
-print(digits.data.shape)
+# print(digits.data.shape)
 # X = iris['data']
 # y = iris['target']
 X = digits['data']
 y = digits['target']
 
 
+# Extract X and y arrays
 # X = extract_X(dataset_array)
 # y = extract_y(dataset_array)
 
@@ -159,9 +160,9 @@ print("Accuracies")
 for ind, a in enumerate(accuracies):
     print(f"Case {ind + 1}: ", f"{round(a * 100, 2)}%")
 
-fig, ax = plt.subplots()
-ax.plot(ks, accuracies)
-ax.set(xlabel="k",
-       ylabel="Accuracy",
-       title="Performance of knn")
-plt.show()
+# fig, ax = plt.subplots()
+# ax.plot(ks, accuracies)
+# ax.set(xlabel="k",
+#        ylabel="Accuracy",
+#        title="Performance of knn")
+# plt.show()
