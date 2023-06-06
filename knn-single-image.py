@@ -18,7 +18,15 @@ img = np.array(Image.open("./test_images/letter_C.jpg").convert('L'))
 # img = np.array(Image.open("./rgbrender_10234.png").convert('L'))
 print(img)
 img = cv2.resize(img, dsize=(20, 20), interpolation=cv2.INTER_LINEAR)
-print(img.shape)
+img = img.flatten()
+img = img.astype(np.float64)
+print("FLAT IMAGE!!! ", img)
+img = [img]
+img = np.array(img)
+img = cv2.resize(img, dsize=(409, 1), interpolation=cv2.INTER_LINEAR)
+img = np.around(img)
+print("STACKED IMAGE: ", img)
+print("IMG ELEMENT TYPE:   ----", type(img[0][0]))
 
 # For Binary Black-and-White image
 # The threshold value (adjust sensitivity for image binarization)
@@ -43,8 +51,6 @@ img_bin = (inverted) * maxval
 # DATASET IMPORT AND TRANSFORMATION
 
 # Read dataset from csv file
-
-
 def convert_data(location):
     results = []
     with open(location) as csvfile:
@@ -110,7 +116,7 @@ def euclidean(point, data):
 
 
 class KNeighborsClassifier:
-    def __init__(self, k=21, dist_metric=euclidean):
+    def __init__(self, k=231, dist_metric=euclidean):
         self.k = k
         self.dist_metric = dist_metric
 
@@ -132,6 +138,7 @@ class KNeighborsClassifier:
         y_pred = np.array(y_pred)
         y_test = np.array(y_test)
         accuracy = sum(y_pred == y_test) / len(y_test)
+        # return y_pred
         return accuracy
 
 
@@ -159,32 +166,44 @@ print("Sampling training data...")
 print("...")
 print("...")
 print("...")
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.01)
-X_test = img_bin
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.02)
+print("X_TRAIN: ", X_train)
+print("X_TRAIN SHAPE: ", X_train.shape)
+print("X_ELEMENT TYPE: ", type(X_train[0][0]))
+print("X_TEST: ", X_test)
+print("X_TEST SHAPE: ", X_test.shape)
+print("X_TEST TYPE: ", type(X_test))
+
+
+Z_test = img_bin
+Z_test = img_bin
+print("Z_TEST: ", Z_test)
+print("Z_TEST SHAPE: ", Z_test.shape)
+print("Z_TEST TYPE: ", type(Z_test))
 print("train data sampled split.")
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-# Scale the train and test data using SrandardScaler
-ss = StandardScaler().fit(X_train)
-X_train, X_test = ss.transform(X_train), ss.transform(X_test)
+# # Scale the train and test data using StandardScaler
+# ss = StandardScaler().fit(X_train)
+# X_train, X_test = ss.transform(X_train), ss.transform(X_test)
 
 
 # RUN KNN ALOGRITHM WITH DATASET AND PLOT RESULTS
 
-knn = KNeighborsClassifier()
-knn.fit(X_train, y_train)
-y_pred = knn.predict(X_test)
-print(y_pred)
+# knn = KNeighborsClassifier()
+# knn.fit(X_train, y_train)
+# y_pred = knn.predict(X_test)
+# print(y_pred)
 
-# accuracies = []
-# ks = range(1, 11)
-# for k in ks:
-#     knn = KNeighborsClassifier(k=k)
-#     knn.fit(X_train, y_train)
-#     accuracy = knn.evaluate(X_test, y_test)
-#     accuracies.append(accuracy)
+accuracies = []
+ks = range(1, 2)
+for k in ks:
+    knn = KNeighborsClassifier(k=k)
+    knn.fit(X_train, y_train)
+    accuracy = knn.evaluate(X_test, y_test)
+    accuracies.append(accuracy)
 
-
+print(accuracies)
 # print("Accuracies")
 # for ind, a in enumerate(accuracies):
 #     print(f"Case {ind + 1}: ", f"{round(a * 100, 2)}%")
@@ -199,4 +218,5 @@ print(y_pred)
 
 # TODO: LEFT OFF
 # Need to ensure that test data is the same shape and size as train data
+# ***LOOK AT Use of Euclidean Distance in X_test set for shape of 2-D np array
 # Need to ensure that StandardScaler is working with new Test data
