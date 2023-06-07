@@ -7,35 +7,49 @@ import matplotlib.pyplot as plt
 import csv
 from PIL import Image
 import cv2
+import sys
 
 most_popular_fonts = ['HELVETICA', 'GARAMOND',
                       'BODONI', 'TIMES', 'VERDANA', 'ROCKWELL', 'FRANKLIN']
 
+######################################################################################
 # IMAGE READ AND BINARIZATION
-
 # Read and Binarize Test Image
-img = np.array(Image.open("./test_images/letter_C.jpg").convert('L'))
-# img = np.array(Image.open("./rgbrender_10234.png").convert('L'))
-print(img)
-img = cv2.resize(img, dsize=(20, 20), interpolation=cv2.INTER_LINEAR)
-img = img.flatten()
-img = img.astype(np.float64)
-print("FLAT IMAGE!!! ", img)
-img = [img]
-img = np.array(img)
-img = cv2.resize(img, dsize=(409, 1), interpolation=cv2.INTER_LINEAR)
-img = np.around(img)
-print("STACKED IMAGE: ", img)
-print("IMG ELEMENT TYPE:   ----", type(img[0][0]))
+
+
+def read_image(img):
+    # img = np.array(Image.open("./rgbrender_10234.png").convert('L'))
+    print(img)
+    img = cv2.resize(img, dsize=(20, 20), interpolation=cv2.INTER_LINEAR)
+    img = img.flatten()
+    # print("FLAT IMAGE!!! ", img)
+    img = [img]
+    img = np.array(img)
+    img = cv2.resize(img, dsize=(409, 1), interpolation=cv2.INTER_LINEAR)
+    # print("STACKED IMAGE: ", img)
+    # print("IMG ELEMENT TYPE:   ----", type(img[0][0]))
+    return img
 
 # For Binary Black-and-White image
-# The threshold value (adjust sensitivity for image binarization)
-print(f"Adjusted threshold VALUE: {img.min() - 50}")
-thresh = img.max() - 50
-img_bool = img > thresh
-inverted = np.invert(img_bool)
-maxval = 255
-img_bin = (inverted) * maxval
+
+
+def binarize_image(img):
+    # The threshold value (adjust sensitivity for image binarization)
+    print(f"Adjusted threshold VALUE: {img.min() - 50.0}")
+    thresh = img.max() - 50.0
+    img_bool = img > thresh
+    inverted = np.invert(img_bool)
+    maxval = 255.0
+    img_bin = (inverted) * maxval
+    # print("BIN IMAGE: ", img_bin)
+    # print("BIN IMG ELEMENT TYPE:   ----", type(img_bin[0][0]))
+    return img_bin
+
+
+# !!!!! SELECT IMAGE TO BE USED AS TEST DATA !!!!!
+imported_img = np.array(Image.open("./test_images/letter_C.jpg").convert('L'))
+img = read_image(imported_img)
+img_bin = binarize_image(img)
 
 # # For Greyscale Image
 # img_bin_keep = (inverted) * img
@@ -44,9 +58,8 @@ img_bin = (inverted) * maxval
 # # Writes image to a png file
 # filename = "test_image"
 # Image.fromarray(np.uint8(img_bin)).save(f'./{filename}_read.png')
+######################################################################################
 
-
-#########################################################################
 
 # DATASET IMPORT AND TRANSFORMATION
 
@@ -70,7 +83,22 @@ def convert_data(location):
     return results
 
 
+# Binarize Dataset
+def binarize_train_images(img):
+    # The threshold value (adjust sensitivity for image binarization)
+    print(f"Adjusted threshold VALUE: {img.min() - 50.0}")
+    thresh = img.max() - 50.0
+    img_bool = img > thresh
+    inverted = np.invert(img_bool)
+    maxval = 255.0
+    img_bin = (inverted) * maxval
+    # print("BIN IMAGE: ", img_bin)
+    # print("BIN IMG ELEMENT TYPE:   ----", type(img_bin[0][0]))
+    return img_bin
+
 # extract X from dataset and format into numpy array
+
+
 def extract_X(array):
     res = []
     print("Extracting X...")
@@ -83,9 +111,11 @@ def extract_X(array):
             new_row.append(float(col))
         res.append(new_row)
     formatted = np.array(res)
+    binarized = binarize_train_images(formatted)
+    print("EXTRACTED X::: ", binarized)
     print("X extracted.")
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    return formatted
+    return binarized
 
 # extract m_labels from dataset and format into numpy array
 
@@ -161,25 +191,34 @@ y = extract_y(dataset_array)
 # y = digits['target']
 
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 # Split into train and test data
 print("Sampling training data...")
 print("...")
 print("...")
 print("...")
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.02)
+# Automatic Train Data Splitting
 print("X_TRAIN: ", X_train)
+print("X_TRAIN_FIRST ELEMENT::: ", X_train[0])
 print("X_TRAIN SHAPE: ", X_train.shape)
 print("X_ELEMENT TYPE: ", type(X_train[0][0]))
+
+# Manual Test Data Entry (See Image Reading Above)
+X_test = img_bin
 print("X_TEST: ", X_test)
 print("X_TEST SHAPE: ", X_test.shape)
 print("X_TEST TYPE: ", type(X_test))
 
 
-Z_test = img_bin
-Z_test = img_bin
-print("Z_TEST: ", Z_test)
-print("Z_TEST SHAPE: ", Z_test.shape)
-print("Z_TEST TYPE: ", type(Z_test))
+# # Test Segment for Preprocessing Data Trial
+# Z_test = img_bin
+# print("Z_TEST: ", Z_test)
+# print("Z_TEST SHAPE: ", Z_test.shape)
+# print("Z_TEST TYPE: ", type(Z_test))
+
+
 print("train data sampled split.")
 print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
