@@ -36,13 +36,32 @@ def reshape_array(array):
     print(reshaped)
     return reshaped
 
+# Binarize Dataset
+
+
+def binarize_train_images(img):
+    # The threshold value (adjust sensitivity for image binarization)
+    print(f"Adjusted threshold VALUE: {img.min() - 50}")
+    thresh = img.max() - 50
+    img_bool = img > thresh
+    inverted = np.invert(img_bool)
+    maxval = 255
+    img_bin = (inverted) * maxval
+    # print("BIN IMAGE: ", img_bin)
+    # print("BIN IMG ELEMENT TYPE:   ----", type(img_bin[0][0]))
+    return img_bin
+
 
 data_array = convert_data()
 parsed_data = parse_colors(data_array)
 image_array = reshape_array(parsed_data[test_number])
+image_array = np.array(image_array)
+print("ARRAY::: ", image_array)
+binarized_image = binarize_train_images(image_array)
+print("BIN ARRAY::: ", binarized_image)
 
 # Writes image to a png file
-Image.fromarray(np.uint8(image_array)).save(f'./rgbrender_{test_number}.png')
+Image.fromarray(np.uint8(image_array)).save(f'./rgbrender_{test_number}_2.png')
 # def write_image(image_array):
 #     width = 20
 #     height = 20

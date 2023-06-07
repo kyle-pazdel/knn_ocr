@@ -25,7 +25,7 @@ def read_image(img):
     # print("FLAT IMAGE!!! ", img)
     img = [img]
     img = np.array(img)
-    img = cv2.resize(img, dsize=(409, 1), interpolation=cv2.INTER_LINEAR)
+    # img = cv2.resize(img, dsize=(409, 1), interpolation=cv2.INTER_LINEAR)
     # print("STACKED IMAGE: ", img)
     # print("IMG ELEMENT TYPE:   ----", type(img[0][0]))
     return img
@@ -83,19 +83,6 @@ def convert_data(location):
     return results
 
 
-# Binarize Dataset
-def binarize_train_images(img):
-    # The threshold value (adjust sensitivity for image binarization)
-    print(f"Adjusted threshold VALUE: {img.min() - 50.0}")
-    thresh = img.max() - 50.0
-    img_bool = img > thresh
-    inverted = np.invert(img_bool)
-    maxval = 255.0
-    img_bin = (inverted) * maxval
-    # print("BIN IMAGE: ", img_bin)
-    # print("BIN IMG ELEMENT TYPE:   ----", type(img_bin[0][0]))
-    return img_bin
-
 # extract X from dataset and format into numpy array
 
 
@@ -107,15 +94,17 @@ def extract_X(array):
     print("...")
     for row in range(1, len(array)):
         new_row = []
-        for col in array[row][3:]:
+        for col in array[row][12:]:
             new_row.append(float(col))
         res.append(new_row)
     formatted = np.array(res)
-    binarized = binarize_train_images(formatted)
-    print("EXTRACTED X::: ", binarized)
+    # print("FORMATTED FIRST:::", formatted[0])
+    # print("FORMATTED FIRST LENGTH:::", len(formatted[0]))
+    # binarized = binarize_image(formatted)
+    # print("EXTRACTED X::: ", binarized)
     print("X extracted.")
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    return binarized
+    return formatted
 
 # extract m_labels from dataset and format into numpy array
 
@@ -168,6 +157,7 @@ class KNeighborsClassifier:
         y_pred = np.array(y_pred)
         y_test = np.array(y_test)
         accuracy = sum(y_pred == y_test) / len(y_test)
+        print("Y PREDICTION:::   ", y_pred)
         # return y_pred
         return accuracy
 
